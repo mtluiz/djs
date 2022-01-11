@@ -12,8 +12,12 @@ CLIENT.on("message", async message => {
 
     if (!message.content.startsWith(PREFIX) || message.author.bot) return;
 
-    let messageCommand = message.content.split(' ')[0];
-    return COMMANDS[messageCommand](message)
+    if (Object.keys(COMMANDS).includes(message.content)) {
+        let messageCommand = message.content.split(' ')[0];
+        return COMMANDS[messageCommand](message)
+    } else {
+        return message.channel.send('mensagem de escreveu errado')
+    }
 })
 
 CLIENT.once("ready", () => console.log("djs is running and ready to play some music!"));
@@ -23,6 +27,6 @@ CLIENT.once("reconnecting", () => {
 });
 
 CLIENT.once("disconnect", () => {
-    console.log("djs is disconnect!");
+    console.log("djs is disconnected!");
 });
 
