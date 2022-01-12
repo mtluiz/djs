@@ -13,6 +13,16 @@ export const playCards = {
 		)
 		.setImage(thumbnail)
 		.setTimestamp()
+	},
+	playing: (title, duration, url) => {
+		return new MessageEmbed()
+		.setColor('#f8de1e')
+		.setTitle(title)
+		.setURL(url)
+		.setDescription('Vai tocar a seguir no servidor 🔥🔥🔥🔥')
+		.addFields(
+			{ name: 'Duração da música', value: duration },
+		)
 	}
 	
 }
