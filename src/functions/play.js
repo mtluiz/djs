@@ -5,16 +5,16 @@ import { createQueue, streamSongFromQueue, addSongToQueue} from '../config/queue
 export default async function play(message) {
     const content = message.content.split(' ').slice(1).join(' ')
     const voiceChannel = message.member.voice.channel;
-    const permissions = voiceChannel.permissionsFor(message.client.user);
-
+    
     if (message.content.split(' ').length <= 1) {
         return message.channel.send({ embeds: [errorCards.typo()] });
     }
-
+    
     if (!voiceChannel) {
         return message.channel.send({ embeds: [errorCards.noChannel()] });
     }
-
+    
+    const permissions = voiceChannel.permissionsFor(message.client.user);
 
     if (!permissions.has("CONNECT") || !permissions.has("SPEAK")) {
         return message.channel.send({ embeds: [errorCards.permission()] });
