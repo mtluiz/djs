@@ -31,18 +31,19 @@ export function addSongToQueue(serverId, song, author, textChannel) {
 
 
 
-export async function streamSongFromQueue(serverId, voiceChannel, message) {
+export async function streamSongFromQueue(serverId, message) {
     const serverQueue = QUEUES_LIST.get(serverId);
 
     const connection = joinVoiceChannel({
-        channelId: message.member.voice.channel.id,
+        channelId: serverQueue.voiceChannel.id,
         guildId: message.guild.id,
         adapterCreator: message.guild.voiceAdapterCreator
     })
 
     const player = createAudioPlayer()
 
-    const songFormat = serverQueue.songs[0].formats.filter(fs => fs.audioQuality === 'AUDIO_QUALITY_LOW' || fs.averageBitrate > 10000)[0]
+    const songFormat = serverQueue.songs[0].formats.filter(fs => fs.audioQuality === 'AUDIO_QUALITY_LOW' || fs.averageBitrate > 60000 ||  highWatermark === '32MiB')[0]
+    console.log(songFormat)
 
     const resource = createAudioResource(ytdl(serverQueue.songs[0].url, { format: songFormat }))
 
@@ -51,11 +52,9 @@ export async function streamSongFromQueue(serverId, voiceChannel, message) {
     connection.subscribe(player)
 
     player.on(AudioPlayerStatus.Playing, ()=> {
-        console.log('vai tocar agora')
+        serverQueue.textChannel.send({embeds: [playCards.playing(serverQueue.songs[0].title, serverQueue.songs[0].duration, serverQueue.songs[0].url)] })
         serverQueue.songs.shift()
     })
-
-    console.log(AudioPlayerStatus)
 
     player.on('error', error => {
         console.error(`Error: ${error.message} with resource`);

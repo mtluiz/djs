@@ -26,9 +26,12 @@ export default async function play(message) {
         icon: `https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.png`
     }
 
-    
+    try{
         createQueue(message.guild.id, message.channel, message.member.voice.channel)
         addSongToQueue(message.guild.id, searchResult, author, message.channel)
         streamSongFromQueue(message.guild.id, message.member.voice.channel, message)
     
+    } catch(err) {
+        console.log(err.message)
+    }
 }
