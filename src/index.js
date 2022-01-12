@@ -1,22 +1,21 @@
-import Discord from 'discord.js';
-import { DISCORD_TOKEN, PREFIX, QUEUES_LIST } from './config/variables.js';
+import Discord, { Client, Intents } from 'discord.js';
+import { DISCORD_TOKEN, PREFIX } from './config/variables.js';
 import COMMANDS from './config/commands.js';
+import {errorCards} from './config/messages.js'
 
-//Connecting to Discord Network
-//Come to life my kin
-const CLIENT = new Discord.Client();
+export const CLIENT = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, 'GUILD_VOICE_STATES'] });
 CLIENT.login(DISCORD_TOKEN);
 
-// Bot message intersecting
 CLIENT.on("message", async message => {
 
     if (!message.content.startsWith(PREFIX) || message.author.bot) return;
 
-    if (Object.keys(COMMANDS).includes(message.content)) {
-        let messageCommand = message.content.split(' ')[0];
+    let messageCommand = message.content.split(' ')[0];
+
+   if (Object.keys(COMMANDS).includes(messageCommand)) {
         return COMMANDS[messageCommand](message)
     } else {
-        return message.channel.send('mensagem de escreveu errado')
+        return message.channel.send({ embeds: [ errorCards.typo() ] })
     }
 })
 
