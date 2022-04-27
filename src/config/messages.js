@@ -55,10 +55,10 @@ export const helpCommands = {
 		.setTitle('Comandos do djs:')
 		.setFields(
 			{name: '.play `nome da música` ou .play `link do youtube`', value: '▶️ Você pode utilizar esse comando para tocar uma música.'},
-			{name: '.play `nome da música` ou .play `link do youtube`', value: '▶️ Você pode utilizar esse comando para tocar uma música.'},
-			{name: '.play `nome da música` ou .play `link do youtube`', value: '▶️ Você pode utilizar esse comando para tocar uma música.'},
-			{name: '.play `nome da música` ou .play `link do youtube`', value: '▶️ Você pode utilizar esse comando para tocar uma música.'},
-			{name: '.play `nome da música` ou .play `link do youtube`', value: '▶️ Você pode utilizar esse comando para tocar uma música.'}
+			{name: '.stop', value: '⏹ Você pode utilizar esse comando para cancelar a lista e expulsar o djs.'},
+			{name: '.pause', value: '⏸ Você pode utilizar esse comando para pausar a música que está tocando no momento.'},
+			{name: '.skip', value: '📀 Você pode utilizar esse comando para pular para a música seguinte da lista.'},
+			{name: '.queue', value: '📝 Você pode utilizar esse comando para ver a lista de músicas que irão tocar.'},
 		)
 	}
 }
