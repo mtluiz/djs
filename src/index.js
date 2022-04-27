@@ -4,6 +4,7 @@ import COMMANDS from './config/commands.js';
 import {errorCards} from './config/messages.js'
 
 export const CLIENT = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, 'GUILD_VOICE_STATES'] });
+
 CLIENT.login(DISCORD_TOKEN);
 
 CLIENT.on("message", async message => {

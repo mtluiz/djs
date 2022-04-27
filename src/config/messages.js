@@ -15,7 +15,7 @@ export const playCards = {
 		.setImage(thumbnail)
 		.setTimestamp()
 	},
-	playing: (title, duration, url) => {
+	playing: (title = '', duration, url) => {
 		return new MessageEmbed()
 		.setColor(yellow)
 		.setTitle(title)
