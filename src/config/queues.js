@@ -14,7 +14,7 @@ export function createQueue(serverId, textChannel, voiceChannel) {
             connection: null,
             songs: [],
             volume: 5,
-            playing: true
+            playing: false
         }
         QUEUES_LIST.set(serverId, startQueue)
         console.log('djs server queue created succefully!')
@@ -41,22 +41,22 @@ export async function streamSongFromQueue(serverId, message) {
     })
 
     const player = createAudioPlayer()
-
-    const songFormat = serverQueue.songs[0].formats.filter(fs => fs.audioQuality === 'AUDIO_QUALITY_LOW' || fs.averageBitrate > 60000 ||  highWatermark === '32MiB')[0]
-    console.log(songFormat)
-
-    const resource = createAudioResource(ytdl(serverQueue.songs[0].url, { format: songFormat }))
+  
+    const resource = createAudioResource(await ytdl(serverQueue.songs[0].url));
 
     player.play(resource);
 
-    connection.subscribe(player)
+    connection.subscribe(player);
 
     player.on(AudioPlayerStatus.Playing, ()=> {
-        serverQueue.textChannel.send({embeds: [playCards.playing(serverQueue.songs[0].title, serverQueue.songs[0].duration, serverQueue.songs[0].url)] })
+        if(!serverQueue.songs[0]) serverQueue.textChannel.send({embeds: [playCards.playing(serverQueue.songs[0].title, serverQueue.songs[0].duration, serverQueue.songs[0].url)] })
         serverQueue.songs.shift()
+        serverQueue.playing = true
     })
 
-    player.on('error', error => {
-        console.error(`Error: ${error.message} with resource`);
-    });
+    player.on('error', err => {
+        console.log(err.message)
+    })
+
+    return player
 }
